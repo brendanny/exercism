@@ -1,8 +1,10 @@
 #if !defined(RAINDROPS_H)
 #define RAINDROPS_H
 
-namespace raindrops {
+#include <string>
 
-}  // namespace raindrops
+namespace raindrops {
+std::string convert(int);
+} // namespace raindrops
 
 #endif // RAINDROPS_H
