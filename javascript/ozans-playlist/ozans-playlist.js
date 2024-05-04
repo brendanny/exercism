@@ -11,9 +11,7 @@
  * @returns {string[]} new playlist with unique entries
  */
 export function removeDuplicates(playlist) {
-  return [
-    ...playlist.reduce((playlistSet, song) => playlistSet.add(song), new Set()),
-  ];
+  return [...new Set([...playlist])];
 }
 
 /**
