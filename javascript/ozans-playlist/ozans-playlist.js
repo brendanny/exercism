@@ -11,7 +11,7 @@
  * @returns {string[]} new playlist with unique entries
  */
 export function removeDuplicates(playlist) {
-  return [...new Set([...playlist])];
+  return [...new Set(playlist)];
 }
 
 /**
@@ -22,7 +22,7 @@ export function removeDuplicates(playlist) {
  * @returns {boolean} whether the track is in the playlist
  */
 export function hasTrack(playlist, track) {
-  return new Set([...playlist]).has(track);
+  return new Set(playlist).has(track);
 }
 
 /**
@@ -33,7 +33,7 @@ export function hasTrack(playlist, track) {
  * @returns {string[]} new playlist
  */
 export function addTrack(playlist, track) {
-  return [...new Set([...playlist]).add(track)];
+  return [...new Set(playlist).add(track)];
 }
 
 /**
@@ -44,7 +44,7 @@ export function addTrack(playlist, track) {
  * @returns {string[]} new playlist
  */
 export function deleteTrack(playlist, track) {
-  const playlistSet = new Set([...playlist]);
+  const playlistSet = new Set(playlist);
   playlistSet.delete(track);
   return [...playlistSet];
 }
