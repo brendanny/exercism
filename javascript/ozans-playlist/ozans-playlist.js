@@ -33,6 +33,7 @@ export function hasTrack(playlist, track) {
  * @returns {string[]} new playlist
  */
 export function addTrack(playlist, track) {
+  // add() returns the set
   return [...new Set(playlist).add(track)];
 }
 
@@ -44,6 +45,7 @@ export function addTrack(playlist, track) {
  * @returns {string[]} new playlist
  */
 export function deleteTrack(playlist, track) {
+  // cannot one-line because delete() returns a boolean
   const playlistSet = new Set(playlist);
   playlistSet.delete(track);
   return [...playlistSet];
@@ -56,6 +58,13 @@ export function deleteTrack(playlist, track) {
  * @returns {string[]} list of artists
  */
 export function listArtists(playlist) {
+  // - this implementation only iterates through the playlist once (when adding to the set)
+  // - an alternative (one-liner) implementation would be to map the playlist to the artist
+  //   and then convert it to a set but that would iterate through the playlist twice
+  //    (once for mapping and once for converting to a set)
+  // - the one-liner implementation would be:
+  //      return [...new Set(playlist.map((song) => song.split("- ")[1]))];
+
   const artistSet = new Set();
 
   playlist.forEach((song) => {
