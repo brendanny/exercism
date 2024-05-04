@@ -1,2 +1,2 @@
--- Schema: CREATE TABLE "gigasecond" ("moment" TEXT, "result" TEXT);
--- Task: update the gigasecond table and set the result based on the moment.
+   update "gigasecond"
+      set "result" = strftime('%FT%T', "moment", '1000000000 seconds');
