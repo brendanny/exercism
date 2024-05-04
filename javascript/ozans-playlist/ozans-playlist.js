@@ -56,5 +56,12 @@ export function deleteTrack(playlist, track) {
  * @returns {string[]} list of artists
  */
 export function listArtists(playlist) {
-  throw new Error("Please implement the listArtists function");
+  const playlistSet = new Set(playlist);
+  const artists = new Set();
+
+  for (const song of playlistSet) {
+    artists.add(song.split("- ")[1]);
+  }
+
+  return [...artists];
 }
