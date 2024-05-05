@@ -28,5 +28,6 @@
     "test": "jest ./*",
     "watch": "jest --watch ./*",
     "lint": "eslint ."
-  }
+  },
+  "packageManager": "yarn@4.2.1"
 }

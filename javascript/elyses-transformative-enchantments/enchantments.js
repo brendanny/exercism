@@ -19,16 +19,7 @@ export function seeingDouble(deck) {
  * @returns {number[]} deck with triplicate 3s
  */
 export function threeOfEachThree(deck) {
-  let newDeck = [];
-  deck.forEach((card) => {
-    newDeck.push(card);
-    if (card === 3) {
-      newDeck.push(card);
-      newDeck.push(card);
-    }
-  });
-
-  return newDeck;
+  return deck.flatMap((card) => (card === 3 ? [3, 3, 3] : [card]));
 }
 
 /**
@@ -40,10 +31,7 @@ export function threeOfEachThree(deck) {
  * @returns {number[]} deck with only two middle cards
  */
 export function middleTwo(deck) {
-  return deck.slice(
-    Math.floor(deck.length / 2) - 1,
-    Math.floor(deck.length / 2) + 1
-  );
+  return deck.slice(4, 6);
 }
 
 /**
@@ -55,8 +43,11 @@ export function middleTwo(deck) {
  */
 
 export function sandwichTrick(deck) {
-  deck.splice(Math.floor(deck.length / 2), 0, deck[deck.length - 1], deck[0]);
-  return deck.slice(1, -1);
+  const first = deck.shift();
+  const last = deck.pop();
+
+  deck.splice(deck.length / 2, 0, last, first);
+  return deck;
 }
 
 /**
@@ -78,8 +69,7 @@ export function twoIsSpecial(deck) {
  * @returns {number[]} ordered deck
  */
 export function perfectlyOrdered(deck) {
-  deck.sort((a, b) => a - b);
-  return deck;
+  return deck.sort((a, b) => a - b);
 }
 
 /**
@@ -90,6 +80,5 @@ export function perfectlyOrdered(deck) {
  * @returns {number[]} reordered deck
  */
 export function reorder(deck) {
-  deck.reverse();
-  return deck;
+  return deck.reverse();
 }
