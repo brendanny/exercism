@@ -62,7 +62,26 @@ export class TranslationService {
    * @returns {Promise<void>}
    */
   request (text) {
-    throw new Error('Implement the request function')
+    let retries = 2
+
+    const makeRequest = () => {
+      return new Promise((resolve, reject) => {
+        this.api.request(text, (error) => {
+          if (error) {
+            if (retries > 0) {
+              retries--
+              resolve(makeRequest())
+            } else {
+              reject(error)
+            }
+          } else {
+            resolve()
+          }
+        })
+      })
+    }
+
+    return makeRequest()
   }
 
   /**
