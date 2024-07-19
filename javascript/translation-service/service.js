@@ -8,8 +8,6 @@
 //
 // In your own projects, files, and code, you can play with @ts-check as well.
 
-import { NotAvailable } from './errors.js'
-
 export class TranslationService {
   /**
    * Creates a new service
@@ -64,26 +62,12 @@ export class TranslationService {
    * @returns {Promise<void>}
    */
   request (text) {
-    let retries = 2
-
-    const makeRequest = () => {
-      return new Promise((resolve, reject) => {
-        this.api.request(text, (error) => {
-          if (error) {
-            if (retries > 0) {
-              retries--
-              resolve(makeRequest())
-            } else {
-              reject(error)
-            }
-          } else {
-            resolve()
-          }
-        })
+    const requestPromise = () => new Promise((resolve, reject) => {
+      this.api.request(text, (result) => {
+        result ? reject(result) : resolve()
       })
-    }
-
-    return makeRequest()
+    })
+    return requestPromise().catch(requestPromise).catch(requestPromise)
   }
 
   /**
@@ -97,19 +81,16 @@ export class TranslationService {
    * @returns {Promise<string>}
    */
   premium (text, minimumQuality) {
-    return this.api.fetch(text).then(({ quality, translation }) => {
-      if (quality >= minimumQuality) {
-        return translation
-      } else {
-        throw new QualityThresholdNotMet(text)
-      }
-    }).catch((error) => {
-      if (error instanceof NotAvailable) {
-        return this.request(text).then(() => this.premium(text, minimumQuality))
-      } else {
-        throw error
-      }
-    })
+    return this.api.fetch(text)
+      .catch(() => this.request(text).then(() => {
+        return this.api.fetch(text)
+      }))
+      .then(result => {
+        if (result.quality < minimumQuality) {
+          throw new QualityThresholdNotMet(text)
+        }
+        return result.translation
+      })
   }
 }
 
