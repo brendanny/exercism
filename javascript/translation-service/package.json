@@ -26,7 +26,7 @@
     "watch": "jest --watch ./*",
     "lint": "eslint ."
   },
-  "packageManager": "yarn@4.2.2",
+  "packageManager": "yarn@4.3.1",
   "standard": {
     "env": [
       "jest"

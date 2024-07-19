@@ -8,6 +8,8 @@
 //
 // In your own projects, files, and code, you can play with @ts-check as well.
 
+import { NotAvailable } from './errors.js'
+
 export class TranslationService {
   /**
    * Creates a new service
@@ -95,7 +97,19 @@ export class TranslationService {
    * @returns {Promise<string>}
    */
   premium (text, minimumQuality) {
-    throw new Error('Implement the premium function')
+    return this.api.fetch(text).then(({ quality, translation }) => {
+      if (quality >= minimumQuality) {
+        return translation
+      } else {
+        throw new QualityThresholdNotMet(text)
+      }
+    }).catch((error) => {
+      if (error instanceof NotAvailable) {
+        return this.request(text).then(() => this.premium(text, minimumQuality))
+      } else {
+        throw error
+      }
+    })
   }
 }
 
